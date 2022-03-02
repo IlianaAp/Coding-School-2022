@@ -63,7 +63,7 @@ Console.WriteLine($"{seconds} seconds is equal to {minutes} minutes, {hours} hou
 // 6.
 
 TimeSpan timeSpan = TimeSpan.FromSeconds(123456789);
-Console.WriteLine($"{timeSpan.TotalSeconds} seconds is equal to {timeSpan.TotalMinutes} minutes, {timeSpan.TotalHours} hours, {timeSpan.Days} days and {timeSpan.Days / 365} years");
+Console.WriteLine($"{timeSpan.TotalSeconds} seconds is equal to {timeSpan.Minutes} minutes, {timeSpan.Hours} hours, {timeSpan.Days} days and {timeSpan.Days / 365} years");
 
 // 7.
 double celsius = 36.6;
