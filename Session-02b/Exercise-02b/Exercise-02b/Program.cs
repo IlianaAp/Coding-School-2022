@@ -59,14 +59,6 @@ days = days - (years * 365);
 
 Console.WriteLine($"{seconds} seconds is equal to {minutes} minutes, {hours} hours, {days} days and {years} years");
 
-// 5.
-minutes = seconds / 60;
-hours = seconds / 3600;
-days = hours / 24;
-years = days / 365;
-
-Console.WriteLine($"{seconds} seconds is equal to {minutes} minutes, {hours} hours, {days} days and {years} years");
-
 
 // 6.
 
