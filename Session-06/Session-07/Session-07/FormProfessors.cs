@@ -21,7 +21,7 @@ namespace Session_07
         List<Professor> professors = new List<Professor>();
         ProfessorService professorService = new ProfessorService();
         Professor professor = new Professor();
-        
+
         public FormProfessors()
         {
             InitializeComponent();
@@ -42,7 +42,7 @@ namespace Session_07
 
             ShowProfessors();
 
-            
+
         }
         private void ShowSelectedProfessor()
         {
@@ -51,9 +51,9 @@ namespace Session_07
                 professor = professors[listViewProfessors.SelectedIndices[0]];
                 textName.Text = professor.GetName();
                 textAge.Text = professor.Age.ToString();
-                comboBoxRank.EditValue =(object)professor.Rank;
+                comboBoxRank.EditValue = (object)professor.Rank;
             }
-            
+
 
         }
 
@@ -67,20 +67,28 @@ namespace Session_07
             {
                 professors[listViewProfessors.SelectedIndices[0]].Name = textName.Text;
                 professors[listViewProfessors.SelectedIndices[0]].Age = Convert.ToInt32(textAge.Text);
-                professors[listViewProfessors.SelectedIndices[0]].Rank = (Ranks) comboBoxRank.EditValue;
+                professors[listViewProfessors.SelectedIndices[0]].Rank = (Ranks)comboBoxRank.EditValue;
             }
-            
+
         }
         private void ShowProfessors()
         {
             listViewProfessors.Items.Clear();
             var json = professorService.Get();
             professors = JsonConvert.DeserializeObject<List<Professor>>(json);
-
-            foreach (var item in professors)
+            if (professors != null)
             {
-                listViewProfessors.Items.Add(string.Format("{0}", item.GetName()));
+                foreach (var item in professors)
+                {
+                    listViewProfessors.Items.Add(string.Format("{0}", item.GetName()));
+                }
             }
+            else
+            {
+                professors = new List<Professor>();
+            }
+
+
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -108,7 +116,7 @@ namespace Session_07
                 listViewProfessors.Items.RemoveAt(listViewProfessors.SelectedIndices[0]);
                 textName.Text = string.Empty;
                 textAge.Text = string.Empty;
-                               
+
             }
         }
         private void SaveToJson()
@@ -120,11 +128,6 @@ namespace Session_07
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void textName_EditValueChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

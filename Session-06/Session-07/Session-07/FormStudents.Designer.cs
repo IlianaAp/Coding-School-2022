@@ -47,12 +47,16 @@
             // 
             // listViewStudents
             // 
+            this.listViewStudents.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewStudents.HideSelection = false;
             this.listViewStudents.Location = new System.Drawing.Point(12, 37);
+            this.listViewStudents.MultiSelect = false;
             this.listViewStudents.Name = "listViewStudents";
             this.listViewStudents.Size = new System.Drawing.Size(298, 401);
             this.listViewStudents.TabIndex = 0;
             this.listViewStudents.UseCompatibleStateImageBehavior = false;
+            this.listViewStudents.View = System.Windows.Forms.View.List;
+            this.listViewStudents.SelectedIndexChanged += new System.EventHandler(this.listViewStudents_SelectedIndexChanged);
             // 
             // labelControl1
             // 
@@ -116,6 +120,7 @@
             this.btnClose.Size = new System.Drawing.Size(89, 47);
             this.btnClose.TabIndex = 16;
             this.btnClose.Text = "CLOSE";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnSave
             // 
@@ -124,6 +129,7 @@
             this.btnSave.Size = new System.Drawing.Size(98, 48);
             this.btnSave.TabIndex = 15;
             this.btnSave.Text = "SAVE";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnDelete
             // 
@@ -132,6 +138,7 @@
             this.btnDelete.Size = new System.Drawing.Size(92, 49);
             this.btnDelete.TabIndex = 14;
             this.btnDelete.Text = "DELETE";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnNew
             // 
@@ -140,6 +147,7 @@
             this.btnNew.Size = new System.Drawing.Size(92, 48);
             this.btnNew.TabIndex = 13;
             this.btnNew.Text = "NEW";
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // FormStudents
             // 

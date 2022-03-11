@@ -47,12 +47,15 @@
             // 
             // listViewProfessors
             // 
+            this.listViewProfessors.Alignment = System.Windows.Forms.ListViewAlignment.Left;
+            this.listViewProfessors.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewProfessors.HideSelection = false;
             this.listViewProfessors.Location = new System.Drawing.Point(12, 34);
             this.listViewProfessors.Name = "listViewProfessors";
             this.listViewProfessors.Size = new System.Drawing.Size(329, 404);
             this.listViewProfessors.TabIndex = 0;
             this.listViewProfessors.UseCompatibleStateImageBehavior = false;
+            this.listViewProfessors.View = System.Windows.Forms.View.List;
             this.listViewProfessors.SelectedIndexChanged += new System.EventHandler(this.listViewProfessors_SelectedIndexChanged);
             // 
             // labelControl1
@@ -71,7 +74,6 @@
             this.textName.Name = "textName";
             this.textName.Size = new System.Drawing.Size(150, 20);
             this.textName.TabIndex = 2;
-            this.textName.EditValueChanged += new System.EventHandler(this.textName_EditValueChanged);
             // 
             // labelControl2
             // 

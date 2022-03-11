@@ -21,8 +21,10 @@ namespace Services
 
         public string Get()
         {
-            return File.ReadAllText(_fileName);
-            
+            if (File.Exists(_fileName))
+                return File.ReadAllText(_fileName);
+            else
+                return string.Empty;
         }
     }
 }
