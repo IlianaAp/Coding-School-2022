@@ -12,6 +12,7 @@ namespace CarServiceCenterLibrary
         public int Code { get; set; }
         public string Description { get; set; }
         public decimal Hours { get; set; }
+        public List<TransactionLine> TransactionLines { get; set; }
         public ServiceTask()
         {
             ID = Guid.NewGuid();

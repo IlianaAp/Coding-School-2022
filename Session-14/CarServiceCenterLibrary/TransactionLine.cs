@@ -9,9 +9,12 @@ namespace CarServiceCenterLibrary
     public class TransactionLine
     {
         public Guid ID { get; set; }
-        public Guid TransactionID { get; set; }
+        public Guid? TransactionID { get; set; }
+        public Transaction Transaction { get; set; }
         public Guid ServiceTaskID { get; set; }
+        public ServiceTask ServiceTask { get; set; }
         public Guid EngineerID { get; set; }
+        public Engineer Engineer { get; set; }
         public decimal Hours { get; set; }
         public decimal PRICE_PER_HOUR { get; }
         public decimal Price { get; set; }

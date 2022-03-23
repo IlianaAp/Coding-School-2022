@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using CarServiceCenterLibrary;
 
-namespace Session_11
+namespace CarServiceCenterLibrary
 {
     [Serializable]
     public class ServiceCenter

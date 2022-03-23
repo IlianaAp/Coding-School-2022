@@ -11,10 +11,15 @@
 
   <ItemGroup>
     <PackageReference Include="devexpress.win.design" Version="21.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarCenterEF\CarCenterEF.csproj" />
     <ProjectReference Include="..\CarServiceCenterLibrary\CarServiceCenterLibrary.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>

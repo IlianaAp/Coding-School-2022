@@ -13,7 +13,7 @@ namespace CarServiceCenterLibrary
         public Brands Brand { get; set; }
         public string Model { get; set; }
         public string RegistrationNumber { get; set; }
-
+        public List<Transaction> Transactions { get; set; }
         public Car()
         {
             ID = Guid.NewGuid();
