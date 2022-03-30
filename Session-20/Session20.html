@@ -135,6 +135,26 @@
             }
             function insertInTable(name,surname,gender,age){
                 var row = document.getElementById("table").insertRow();
+
+                row.addEventListener("click",function(){
+                    document.getElementById("txtName").value = this.cells[0].innerHTML;
+                    document.getElementById("txtSurname").value = this.cells[1].innerHTML;
+                    if(this.cells[2].innerHTML==='male'){
+                        document.getElementById("genderMale").setAttribute("checked","checked");
+                        document.getElementById("genderMale").checked = true;
+                        document.getElementById("genderFemale").checked = false;
+                        document.getElementById("genderFemale").setAttribute("checked","unchecked");
+                    }
+                    else{
+                        document.getElementById("genderFemale").setAttribute("checked","checked");
+                        document.getElementById("genderFemale").checked = true;
+                        document.getElementById("genderMale").checked = false;
+                        document.getElementById("genderMale").setAttribute("checked","unchecked");
+
+                    }
+                    document.getElementById("txtAge").value = this.cells[3].innerHTML;
+                });
+                
                 var cell1 = row.insertCell();
                 var cell2 = row.insertCell();
                 var cell3 = row.insertCell();
