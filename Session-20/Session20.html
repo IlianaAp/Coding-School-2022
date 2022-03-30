@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+</html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Session 20</title>
+    </head>
+    
+    <body>
+        <div>
+            <label>Word</label>
+            <input type="textarea" id="txtInput">
+            <button id="btnReverse" onclick="reverseInputText()">Reverse</button>
+        </div>
+        <br>
+        <br>
+        <div>
+            <label>Word</label>
+            <input type="textarea" id="txtInput2">
+            <button id="btnPalindrome" onclick="checkPalindrome()">Palindrome ?</button>
+            <label id="labelResult"></label>
+        </div>
+        <br>
+        <br>
+        <div>
+            <div>
+                <form id="frmMain">
+                    <input id="txtSelectedId" type="hidden">
+                    <label for="txtName">Name</label>
+                    <input id="txtName"><br>
+                    <label for="txtSurname">Surname</label>
+                    <input id="txtSurname"><br>
+                    <label for="genderFemale">Female</label>
+                    <input id="genderFemale" type="radio" name="gender" value="female" checked="checked" />
+                    <label for="genderMale">Male</label>
+                    <input id="genderMale" type="radio" name="gender" value="male" /><br>
+                    <label for="txtAge">Age</label>
+                    <input id="txtAge"><br>
+                </form>
+                <div>
+                    <button id="btnSubmit" onclick="AddPerson()">ADD</button>
+                </div>
+            </div>
+            <div>
+                <table id="table" >
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Surname
+                        </th>
+                        <th>
+                            Gender
+                        </th>
+                        <th>
+                            Age
+                        </th>
+                    </tr>
+                
+                </table>
+            </div>    
+        </div>
+        <br>
+        <br>
+        <div>
+            <input type="textarea" id="txtInput3">
+            <button id="btn" onclick="btbAddOne()">Add 1</button>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <script type="text/javascript">
+            
+            function reverseInputText(){
+                var text = document.getElementById("txtInput").value;               
+                document.getElementById("txtInput").value = text.split("").reverse().join("");
+            }
+
+            function checkPalindrome(){
+                var str = document.getElementById("txtInput2").value;
+                var reversedStr = str.split("").reverse().join("");
+                if (str === reversedStr){
+                    document.getElementById("labelResult").innerHTML = "true";
+                }
+                else{
+                    document.getElementById("labelResult").innerHTML = "false";
+                }
+            }
+
+            function btbAddOne(){
+                var text = document.getElementById("txtInput3").value;
+                document.getElementById("txtInput3").value = exerciseFive(text);
+            }
+            function exerciseFive(str){
+                var arrayStr = str.split("");
+                var arrayNum = [];
+                var num;
+                for(let i=arrayStr.length-1; i>=0; i--){
+                    if( isNaN(arrayStr[i]) ){
+                        break;
+                    }
+                    else{
+                        arrayNum.push(arrayStr[i]);
+                    }
+                }
+                if (arrayNum.length > 0){
+                    arrayNum = arrayNum.reverse();
+                    str = str.slice(0,arrayStr.length - arrayNum.length);
+                    num = +arrayNum.join("");
+                    str += num +1;
+                    return str;
+                }
+                else{
+                    return str+1;
+                }
+                
+            }
+            function AddPerson(){
+                var name = document.getElementById("txtName").value;
+                var surname = document.getElementById("txtSurname").value;
+                var gender = document.querySelector('input[name="gender"]:checked').value;
+                var age = document.getElementById("txtAge").value;
+                insertInTable(name,surname,gender,age);
+                document.getElementById('frmMain').reset();
+                document.getElementById('txtSelectedId').value = null;
+            }
+            function insertInTable(name,surname,gender,age){
+                var row = document.getElementById("table").insertRow();
+                var cell1 = row.insertCell();
+                var cell2 = row.insertCell();
+                var cell3 = row.insertCell();
+                var cell4 = row.insertCell();
+                var textName = document.createTextNode(name);
+                var textSurname = document.createTextNode(surname);
+                var textGender = document.createTextNode(gender);
+                var textAge = document.createTextNode(age);
+                cell1.appendChild(textName);
+                cell2.appendChild(textSurname);
+                cell3.appendChild(textGender);
+                cell4.appendChild(textAge);
+            }
+            
+
+
+        </script>       
+    </body>
+</html>
