@@ -114,6 +114,7 @@
             this.grdItems.Location = new System.Drawing.Point(29, 57);
             this.grdItems.MultiSelect = false;
             this.grdItems.Name = "grdItems";
+            this.grdItems.ReadOnly = true;
             this.grdItems.RowTemplate.Height = 25;
             this.grdItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdItems.Size = new System.Drawing.Size(742, 343);

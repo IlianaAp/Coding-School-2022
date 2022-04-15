@@ -117,6 +117,7 @@
             this.grdTransactions.Location = new System.Drawing.Point(12, 64);
             this.grdTransactions.MultiSelect = false;
             this.grdTransactions.Name = "grdTransactions";
+            this.grdTransactions.ReadOnly = true;
             this.grdTransactions.RowTemplate.Height = 25;
             this.grdTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdTransactions.Size = new System.Drawing.Size(742, 343);
