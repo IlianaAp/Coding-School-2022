@@ -1,0 +1,21 @@
+﻿@page "/index"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Fuel Station Management</h1>
+
+<p><em>Welcome to our Fuel Station @currentUser.UserName !</em></p>
+
+
+
+
+@code{
+    [CascadingParameter]
+    public CurrentUser currentUser { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+    }
+}

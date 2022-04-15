@@ -1,0 +1,39 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager navigationManager
+
+<CascadingValue Value=@CurrentUser>
+           <div class="page">
+
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+
+            <main>
+
+                <div class="top-row px-4">
+                    <label>Username : @CurrentUser.UserName</label>
+                    <a @onclick="@(() => navigationManager.NavigateTo("/"))" class="text-primary" style="cursor: pointer" >Logout</a>
+                </div>
+
+                <article class="content px-4">
+
+                    @Body
+
+                </article>
+            </main>
+        </div>
+</CascadingValue>
+ 
+
+
+@code{
+    [Inject] public CurrentUser CurrentUser { get; set; } = new();
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if(!CurrentUser.IsLogedIn)
+        {
+            navigationManager.NavigateTo("/");
+        }
+    }
+}

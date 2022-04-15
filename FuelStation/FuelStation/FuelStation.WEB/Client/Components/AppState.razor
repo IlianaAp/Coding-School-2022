@@ -1,0 +1,13 @@
+﻿
+
+
+<CascadingValue Value=@CurrentUser >
+    @Body
+</CascadingValue>
+
+
+@code {
+    public CurrentUser CurrentUser { get; set; } = new();
+    [Parameter]
+    public RenderFragment Body { get; set; }
+}

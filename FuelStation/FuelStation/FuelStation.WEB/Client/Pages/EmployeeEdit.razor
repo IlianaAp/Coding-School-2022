@@ -1,0 +1,138 @@
+﻿@page "/EmployeeList/Edit/{ID:guid?}"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Employee Edit</h3>
+@if (employeeView == null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <EditForm Model=@employeeView OnValidSubmit="@(async () => await OnSave())">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputSurname">Surname</label>
+                    <input type="text" class="form-control" id="inputSurname" placeholder="Enter Surname" @bind-value="employeeView.Surname">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputName">Name</label>
+                    <input type="text" class="form-control" id="inputName" placeholder="Enter Name" @bind-value="employeeView.Name">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputHireDateStart">Hire Date Start</label>
+                    <input type="date" class="form-control" id="inputHireDateStart" placeholder="Enter Hire Date" @bind-value="employeeView.HireDateStart">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputHireDateEnd">Hire Date End</label>
+                    <input type="date" class="form-control" id="inputHireDateEnd" placeholder="Enter Hire Date End" @bind-value="employeeView.HireDateEnd">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputEmployeeType">Employee Type</label>
+                    <InputSelect class="form-control" id="inputEmployeeType" @bind-Value="@employeeView.EmployeeType">
+                        @foreach (var employeeType in Enum.GetValues(typeof(FuelStation.Shared.EmployeeType)))
+                        {
+                        <option>@employeeType</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputSallaryPerMonth">Sallary Per Month</label>
+                    <input type="number" step="any" class="form-control" id="inputSallaryPerMonth" placeholder="Sallary Per Month" @bind-value="employeeView.SallaryPerMonth">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputUsername">Username</label>
+                    <input type="text" class="form-control" id="inputUsername" placeholder="Enter Username" @bind-value="employeeView.Username">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="text" class="form-control" id="inputPassword" placeholder="Enter Password" @bind-value="employeeView.Password">
+                </div>
+            </div>
+        </div>
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <label class="text-danger">@errorMessage</label>
+        }       
+        <div class="row mt-2">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
+            </div>
+        </div>
+    </EditForm>
+}
+@code {
+    [Parameter] public Guid? ID { get; set; }
+    EmployeeViewModel employeeView { get; set; }
+    private string errorMessage { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        employeeView = await httpClient.GetFromJsonAsync<EmployeeViewModel>($"Employee/{(ID.HasValue ? ID.Value : Guid.Empty)}");
+    }
+    private async Task OnSave()
+    {
+        errorMessage = string.Empty;
+        if (!HasValidDates())
+        {
+            errorMessage = "Hire Start date must be before Hire End date";
+            return;
+        }
+        if(ID == null)
+        {
+            var res = await httpClient.PostAsJsonAsync("Employee", employeeView);
+            if(res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                errorMessage = await res.Content.ReadAsStringAsync();
+                return;
+            }
+        }
+        else
+        {
+            var res = await httpClient.PutAsJsonAsync("Employee", employeeView);
+            if(res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                errorMessage = await res.Content.ReadAsStringAsync();
+                return;
+            }
+        }
+        navigationManager.NavigateTo("EmployeeList");
+    }
+    private void OnCancel()
+    {
+        navigationManager.NavigateTo("EmployeeList");
+    }
+
+    private bool HasValidDates()
+    {
+        return (employeeView.HireDateStart < employeeView.HireDateEnd || employeeView.HireDateEnd == null);
+    }
+}

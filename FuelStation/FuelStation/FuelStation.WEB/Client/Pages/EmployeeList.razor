@@ -1,0 +1,117 @@
+﻿@page "/EmployeeList"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Employees</h3>
+<button class="btn btn-primary" @onclick="AddNewEmployee">New Employee</button>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Employee Type</th>
+                <th>Hire Date Start</th>
+                <th>Hire Date End</th>
+                <th>Sallary Per Month</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employeeViewModel in employeeList.EmployeeViewModels)
+            {
+                <tr>
+                    <td>@employeeViewModel.Name</td>
+                    <td>@employeeViewModel.Surname</td>
+                    <td>@employeeViewModel.EmployeeType</td>
+                    <td>@employeeViewModel.HireDateStart.ToString("dd/MM/yyyy")</td>
+                    @{
+                        if (employeeViewModel.HireDateEnd.HasValue)
+                        {
+                            <td>@employeeViewModel.HireDateEnd.Value.ToString("dd/MM/yyyy")</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+                    }
+                    <td>@employeeViewModel.SallaryPerMonth</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditEmployee(employeeViewModel)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => OpenDeleteConfirmation(employeeViewModel)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <Modal @ref=modalRef>
+        <Header>
+            <h5 class="modal-title">Delete Confirmation</h5>
+        </Header>
+        <Content>
+            <div class="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Code : @selectedEmployee.Surname </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Description : @selectedEmployee.Name </label>
+                    </div>
+                </div>
+            </div>
+        </Content>
+        <Footer>
+            <button type="button" @onclick="modalRef.CloseModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" @onclick="() => DeleteEmployee(selectedEmployee)" class="btn btn-danger">Delete</button>
+        </Footer>
+    </Modal>
+}
+@code {
+    private EmployeeListViewModel employeeList = new();
+    private bool isLoading = true;
+    private EmployeeViewModel selectedEmployee = new();
+    private Modal modalRef;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEmployeesFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadEmployeesFromServer()
+    {
+        employeeList.EmployeeViewModels = await httpClient.GetFromJsonAsync<List<EmployeeViewModel>>("employee");
+    }
+
+    private async Task AddNewEmployee()
+    {
+        navigationManager.NavigateTo($"/EmployeeList/Edit");
+    }
+
+    private async Task EditEmployee(EmployeeViewModel employeeView)
+    {
+        navigationManager.NavigateTo($"/EmployeeList/Edit/{employeeView.ID}");
+    }
+
+    private async Task DeleteEmployee(EmployeeViewModel employeeView)
+    {
+        var response = await httpClient.DeleteAsync($"employee/{employeeView.ID}");
+        response.EnsureSuccessStatusCode();
+        await LoadEmployeesFromServer();
+        modalRef.CloseModal();
+    }
+    private void OpenDeleteConfirmation(EmployeeViewModel employeeView)
+    {
+        selectedEmployee = employeeView;
+        modalRef.OpenModal();
+    }
+}

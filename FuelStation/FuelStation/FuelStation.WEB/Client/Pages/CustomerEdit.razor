@@ -1,0 +1,76 @@
+﻿@page "/CustomerList/Edit/{ID:guid?}"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+
+<h3>Customer Edit</h3>
+@if (customerView == null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <EditForm Model=@customerView OnValidSubmit="@(async () => await OnSave())">
+        <div class="form-group">
+            <label for="inputSurname">Surname</label>
+            <input type="text" class="form-control" id="inputSurname" placeholder="Enter Surname" @bind-value="customerView.Surname" >
+        </div>
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" class="form-control" id="inputName" placeholder="Enter Name" @bind-value="customerView.Name">
+        </div>
+        <div class="form-group">
+            <label for="inputCardNumber">Card Number</label>
+            <input type="text" class="form-control" id="inputCardNumber" placeholder="Enter Card Number" @bind-value="customerView.CardNumber">
+        </div>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <label class="text-danger">@errorMessage</label>
+        }       
+        <div class="row mt-2">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
+            </div>
+        </div>
+    </EditForm>
+}
+@code {
+    [Parameter] public Guid? ID { get; set; }
+    CustomerViewModel customerView { get; set; }
+    private string errorMessage { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        customerView = await httpClient.GetFromJsonAsync<CustomerViewModel>($"Customer/{(ID.HasValue ? ID.Value : Guid.Empty)}");
+    }
+    private async Task OnSave()
+    {
+        errorMessage = string.Empty;
+        if(ID == null)
+        {
+            var res = await httpClient.PostAsJsonAsync("Customer", customerView);
+            if(res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                errorMessage = await res.Content.ReadAsStringAsync();
+                return;
+            }
+        }
+        else
+        {
+            var res = await httpClient.PutAsJsonAsync("Customer", customerView);
+            if(res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                errorMessage = await res.Content.ReadAsStringAsync();
+                return;
+            }
+        }
+        navigationManager.NavigateTo("CustomerList");
+    }
+    private void OnCancel()
+    {
+        navigationManager.NavigateTo("CustomerList");
+    }
+}

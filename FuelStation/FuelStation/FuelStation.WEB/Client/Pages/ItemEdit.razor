@@ -1,0 +1,107 @@
+﻿@page "/ItemList/Edit/{ID:guid?}"
+
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>ItemEdit</h3>
+
+@if (itemView == null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <EditForm Model=@itemView OnValidSubmit="@(async () => await OnSave())">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputCode">Code</label>
+                    <input type="text" class="form-control" id="inputCode" placeholder="Enter Code" @bind-value="itemView.Code">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputDescription">Description</label>
+                    <input type="text" class="form-control" id="inputDescription" placeholder="Enter Description" @bind-value="itemView.Description">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputItemType">Item Type</label>
+                    <InputSelect class="form-control" id="inputItemType" @bind-Value="@itemView.ItemType">
+                        @foreach (var itemType in Enum.GetValues(typeof(FuelStation.Shared.ItemType)))
+                        {
+                        <option>@itemType</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputPrice">Price</label>
+                    <input type="number" step="any" class="form-control" id="inputPrice" placeholder="Enter Price" @bind-value="itemView.Price">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputCost">Cost</label>
+                    <input type="number" step="any" class="form-control" id="inputCost" placeholder="Enter Cost" @bind-value="itemView.Cost">
+                </div>
+            </div>
+        </div>    
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <label class="text-danger">@errorMessage</label>
+        }
+        <div class="row mt-2">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button class="btn btn-danger" @onclick="OnCancel">Cancel</button>
+            </div>
+        </div>
+    </EditForm>
+}
+@code {
+    [Parameter] public Guid? ID { get; set; }
+    ItemViewModel itemView { get; set; }
+    private string errorMessage { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        itemView = await httpClient.GetFromJsonAsync<ItemViewModel>($"Item/{(ID.HasValue ? ID.Value : Guid.Empty)}");
+    }
+    private async Task OnSave()
+    {
+        errorMessage = string.Empty;
+        if (ID == null)
+        {
+            var res = await httpClient.PostAsJsonAsync("Item", itemView);
+            if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                errorMessage = await res.Content.ReadAsStringAsync();
+                return;
+            }
+        }
+        else
+        {
+            var res = await httpClient.PutAsJsonAsync("Item", itemView);
+            if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                errorMessage = await res.Content.ReadAsStringAsync();
+                return;
+            }
+        }
+        navigationManager.NavigateTo("ItemList");
+    }
+    private void OnCancel()
+    {
+        navigationManager.NavigateTo("ItemList");
+    }
+
+}

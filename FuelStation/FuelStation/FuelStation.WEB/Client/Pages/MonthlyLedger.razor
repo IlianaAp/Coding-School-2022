@@ -1,0 +1,89 @@
+﻿@page "/MonthlyLedger"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<h3>Monthly Ledger</h3>
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model=@monthlyView OnValidSubmit="@(async () => await OnAdd())">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="inputYear">Year</label>
+                    <input type="number" min="1999" max="2099" step="1" class="form-control" id="inputYear" placeholder="Enter Year" @bind-value="monthlyView.Year">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="inputMonth">Month</label>
+                   <InputSelect class="form-control" id="inputMonth" @bind-Value="@monthlyView.Month">
+                        @foreach (var month in Enum.GetValues(typeof(FuelStation.Shared.Month)))
+                        {
+                        <option value="@((int)month)">@month</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="inputRent">Rent</label>
+                    <input type="number" min="0" max="1000000" step="any" class="form-control" id="inputRent" placeholder="Enter Rent" @bind-value="monthlyView.Rent">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Month</th>
+                <th>Income</th>
+                <th>Expenses</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var monthlyViewModel in monthlyList.MonthlyLedgerViewModels)
+            {
+                <tr>
+                    <td>@monthlyViewModel.Year</td>
+                    <td>@monthlyViewModel.Month</td>
+                    <td>@monthlyViewModel.Income</td>
+                    <td>@monthlyViewModel.Expenses</td>
+                    <td>@monthlyViewModel.Total</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private MonthlyLedgerListViewModel monthlyList = new();
+    private bool isLoading = false;
+    private MonthlyLedgerViewModel monthlyView = new();
+
+    private async Task OnAdd()
+    {
+        var monthly = await httpClient.GetFromJsonAsync<MonthlyLedgerViewModel>($"MonthlyLedger/{monthlyView.Year}/{monthlyView.Month}/{monthlyView.Rent}");
+        monthlyList.MonthlyLedgerViewModels.Add(monthly);
+    }
+    private bool MonthlyLedgerExists()
+    {
+        foreach(MonthlyLedgerViewModel monthly in monthlyList.MonthlyLedgerViewModels)
+        {
+            if(monthly.Year == monthlyView.Year && monthly.Month == monthlyView.Month)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}

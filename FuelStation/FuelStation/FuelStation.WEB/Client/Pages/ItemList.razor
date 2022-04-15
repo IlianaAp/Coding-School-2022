@@ -1,0 +1,108 @@
+﻿@page "/ItemList"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+
+
+<h3>Items</h3>
+<button class="btn btn-primary" @onclick="AddNewItem">New Item</button>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+  <table class="table">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Description</th>
+                <th>Item Type</th>
+                <th>Price</th>
+                <th>Cost</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var itemViewModel in itemList.ItemViewModels)
+            {
+                <tr>
+                    <td>@itemViewModel.Code</td>
+                    <td>@itemViewModel.Description</td>
+                    <td>@itemViewModel.ItemType</td>
+                    <td>@itemViewModel.Price</td>
+                    <td>@itemViewModel.Cost</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditItem(itemViewModel)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => OpenDeleteConfirmation(itemViewModel)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <Modal @ref=modalRef>
+        <Header>
+            <h5 class="modal-title">Delete Confirmation</h5>
+        </Header>
+        <Content>
+            <div class="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label >Code : @selectedItem.Code </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label >Description : @selectedItem.Description </label>
+                    </div>
+                </div>
+            </div>
+        </Content>
+        <Footer>
+            <button type="button" @onclick="modalRef.CloseModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" @onclick="() => DeleteItem(selectedItem)" class="btn btn-danger">Delete</button>
+        </Footer>
+    </Modal>
+}
+@code {
+    private ItemListViewModel itemList = new();
+    private bool isLoading = true;
+    private ItemViewModel selectedItem = new();
+    private Modal modalRef;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItemsFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadItemsFromServer()
+    {
+        itemList.ItemViewModels = await httpClient.GetFromJsonAsync<List<ItemViewModel>>("Item"); 
+    }
+
+    private async Task AddNewItem()
+    {
+        navigationManager.NavigateTo($"/ItemList/Edit");
+    }
+
+    private async Task EditItem(ItemViewModel itemView)
+    {
+        navigationManager.NavigateTo($"/ItemList/Edit/{itemView.ID}");
+    }
+
+    private async Task DeleteItem(ItemViewModel itemView)
+    {       
+        var response = await httpClient.DeleteAsync($"item/{itemView.ID}");
+        response.EnsureSuccessStatusCode();
+        await LoadItemsFromServer();
+        modalRef.CloseModal();
+    }
+    private void OpenDeleteConfirmation(ItemViewModel itemView)
+    {
+        selectedItem = itemView;
+        modalRef.OpenModal();
+    }
+
+}

@@ -1,0 +1,69 @@
+﻿@layout LoginLayout
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@page "/"
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="/imgs/fuelstation.webp"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form3Example3" @bind-value="@userView.Username" class="form-control form-control-lg"
+                               placeholder="Enter username" />
+                        <label class="form-label" for="form3Example3">Username</label>
+                    </div>
+
+
+                    <div class="form-outline mb-3">
+                        <input type="password" id="form3Example4" @bind-value="@userView.Password" class="form-control form-control-lg"
+                               placeholder="Enter password" />
+                        <label class="form-label" for="form3Example4">Password</label>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class = "text-danger">@errorMessage</div>
+                        }
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="button" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;" @onclick="@(() => LoginTo())">
+                            Login
+                        </button>
+                        
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    [CascadingParameter]
+    public CurrentUser CurrentUser { get; set; }
+    private UserViewModel userView = new();
+    private string errorMessage = string.Empty;
+
+    private async Task LoginTo()
+    {
+        var result = await httpClient.PostAsJsonAsync<UserViewModel>($"Auth", userView);
+        if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            errorMessage = "Wrong Credentials";
+            return;
+        }
+        CurrentUser.UserName = userView.Username;
+        CurrentUser.EmployeeType = (EmployeeType)Convert.ToInt32((await result.Content.ReadAsStringAsync()));
+        CurrentUser.IsLogedIn = true;
+        navigationManager.NavigateTo("/index");
+    }
+
+}

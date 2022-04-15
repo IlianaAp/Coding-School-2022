@@ -1,0 +1,103 @@
+﻿@page "/CustomerList"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+
+<h3>Customers</h3>
+<button class="btn btn-primary" @onclick="AddNewCustomer">New Customer</button>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+  <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Card Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customerViewModel in customerList.CustomerViewModels)
+            {
+                <tr>
+                    <td>@customerViewModel.Name</td>
+                    <td>@customerViewModel.Surname</td>
+                    <td>@customerViewModel.CardNumber</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditCustomer(customerViewModel)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => OpenDeleteConfirmation(customerViewModel)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <Modal @ref=modalRef>
+        <Header>
+            <h5 class="modal-title">Delete Confirmation</h5>
+        </Header>
+        <Content>
+            <div class="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label >Code : @selectedCustomer.Surname</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label >Description : @selectedCustomer.Name </label>
+                    </div>
+                </div>
+            </div>
+        </Content>
+        <Footer>
+            <button type="button" @onclick="modalRef.CloseModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" @onclick="() => DeleteCustomer(selectedCustomer)" class="btn btn-danger">Delete</button>
+        </Footer>
+    </Modal>
+}
+
+@code {
+    private CustomerListViewModel customerList = new();
+    private bool isLoading = true;
+    private CustomerViewModel selectedCustomer = new();
+    private Modal modalRef;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCustomersFromServer();
+        isLoading = false;
+    }
+
+    private async Task LoadCustomersFromServer()
+    {
+        customerList.CustomerViewModels = await httpClient.GetFromJsonAsync<List<CustomerViewModel>>("customer"); 
+    }
+
+    private async Task AddNewCustomer()
+    {
+        navigationManager.NavigateTo($"/CustomerList/Edit");
+    }
+
+    private async Task EditCustomer(CustomerViewModel customerView)
+    {
+        navigationManager.NavigateTo($"/CustomerList/Edit/{customerView.ID}");
+    }
+
+    private async Task DeleteCustomer(CustomerViewModel customerView)
+    {
+        var response = await httpClient.DeleteAsync($"customer/{customerView.ID}");
+        response.EnsureSuccessStatusCode();
+        await LoadCustomersFromServer();
+        modalRef.CloseModal();
+    }
+    private void OpenDeleteConfirmation(CustomerViewModel customerView)
+    {
+        selectedCustomer = customerView;
+        modalRef.OpenModal();
+    }
+
+}
