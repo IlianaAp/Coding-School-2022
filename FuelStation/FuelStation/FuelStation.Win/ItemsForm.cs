@@ -66,6 +66,7 @@ namespace FuelStation.Win
 
         private async void btnDelete_Click(object sender, EventArgs e)
         {
+
             var selectedItem = GetSelectedItem();
             if(selectedItem != null)
             {
@@ -73,7 +74,13 @@ namespace FuelStation.Win
                 if (result == DialogResult.Yes)
                 {
                     var httpClient = new HttpClient();
-                    await httpClient.DeleteAsync($"https://localhost:7056/Item/{selectedItem.ID}");
+
+                    
+                    var res = await httpClient.DeleteAsync($"https://localhost:7056/Item/{selectedItem.ID}");
+                    if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        errorMessageLabel.Text = "A transaction exists with this item";
+                    }
                     await LoadData();
                 }
             }

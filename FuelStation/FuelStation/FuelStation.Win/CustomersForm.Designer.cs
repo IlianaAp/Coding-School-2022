@@ -38,6 +38,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.errorMessageLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsCustomers)).BeginInit();
             this.SuspendLayout();
@@ -64,7 +65,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.Location = new System.Drawing.Point(31, 61);
+            this.dataGridView1.Location = new System.Drawing.Point(31, 54);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -127,11 +128,22 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Customers";
             // 
+            // errorMessageLabel
+            // 
+            this.errorMessageLabel.AutoSize = true;
+            this.errorMessageLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.errorMessageLabel.ForeColor = System.Drawing.Color.Red;
+            this.errorMessageLabel.Location = new System.Drawing.Point(443, 31);
+            this.errorMessageLabel.Name = "errorMessageLabel";
+            this.errorMessageLabel.Size = new System.Drawing.Size(0, 17);
+            this.errorMessageLabel.TabIndex = 25;
+            // 
             // CustomersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.errorMessageLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCancel);
@@ -160,5 +172,6 @@
         private Button btnCancel;
         private Button btnDelete;
         private Label label1;
+        private Label errorMessageLabel;
     }
 }

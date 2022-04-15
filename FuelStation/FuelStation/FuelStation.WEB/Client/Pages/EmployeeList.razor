@@ -11,6 +11,11 @@
 }
 else
 {
+    @if (!string.IsNullOrEmpty( errorMessage))
+    {
+        <div class="text-danger">@errorMessage</div>
+    }
+    
     <table class="table">
         <thead>
             <tr>
@@ -76,10 +81,13 @@ else
     </Modal>
 }
 @code {
+    [CascadingParameter]
+    public CurrentUser currentUser { get; set; }
     private EmployeeListViewModel employeeList = new();
     private bool isLoading = true;
     private EmployeeViewModel selectedEmployee = new();
     private Modal modalRef;
+    private string errorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,12 +113,30 @@ else
     private async Task DeleteEmployee(EmployeeViewModel employeeView)
     {
         var response = await httpClient.DeleteAsync($"employee/{employeeView.ID}");
-        response.EnsureSuccessStatusCode();
-        await LoadEmployeesFromServer();
+        if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            errorMessage = "This employee already exists in transaction";
+        }
+        else
+        {
+            await LoadEmployeesFromServer();
+            errorMessage = string.Empty;
+        }
+
+
         modalRef.CloseModal();
     }
     private void OpenDeleteConfirmation(EmployeeViewModel employeeView)
     {
+        if(employeeView.Username == currentUser.UserName)
+        {
+            errorMessage = "You cannot delete yourself";
+            return;
+        }
+        else
+        {
+            errorMessage = string.Empty;
+        }
         selectedEmployee = employeeView;
         modalRef.OpenModal();
     }

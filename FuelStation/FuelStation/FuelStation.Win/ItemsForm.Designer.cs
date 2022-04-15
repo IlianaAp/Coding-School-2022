@@ -36,6 +36,7 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.grdItems = new System.Windows.Forms.DataGridView();
+            this.errorMessageLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdItems)).BeginInit();
             this.SuspendLayout();
             // 
@@ -120,11 +121,22 @@
             this.grdItems.Size = new System.Drawing.Size(742, 343);
             this.grdItems.TabIndex = 7;
             // 
+            // errorMessageLabel
+            // 
+            this.errorMessageLabel.AutoSize = true;
+            this.errorMessageLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.errorMessageLabel.ForeColor = System.Drawing.Color.Red;
+            this.errorMessageLabel.Location = new System.Drawing.Point(485, 27);
+            this.errorMessageLabel.Name = "errorMessageLabel";
+            this.errorMessageLabel.Size = new System.Drawing.Size(0, 17);
+            this.errorMessageLabel.TabIndex = 24;
+            // 
             // ItemsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.errorMessageLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCancel);
@@ -151,5 +163,6 @@
         private Button btnEdit;
         private Button btnNew;
         private DataGridView grdItems;
+        private Label errorMessageLabel;
     }
 }

@@ -77,7 +77,13 @@ namespace FuelStation.Win
                 if(result == DialogResult.Yes)
                 {
                     var httpClient = new HttpClient();
-                    await httpClient.DeleteAsync($"https://localhost:7056/Customer/{selectedCustomer.ID}");
+                    var res =await httpClient.DeleteAsync($"https://localhost:7056/Customer/{selectedCustomer.ID}");
+                    if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        errorMessageLabel.Text = "A transaction exists with this Customer";
+                        return;
+                    }
+                    
                     await LoadData();
                 }
             }

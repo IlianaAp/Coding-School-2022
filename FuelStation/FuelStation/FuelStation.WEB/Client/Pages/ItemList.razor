@@ -13,6 +13,10 @@
 }
 else
 {
+    @if (!string.IsNullOrEmpty( errorMessage))
+    {
+        <div class="text-danger">@errorMessage</div>
+    }
   <table class="table">
         <thead>
             <tr>
@@ -70,6 +74,7 @@ else
     private bool isLoading = true;
     private ItemViewModel selectedItem = new();
     private Modal modalRef;
+    private string errorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,8 +100,16 @@ else
     private async Task DeleteItem(ItemViewModel itemView)
     {       
         var response = await httpClient.DeleteAsync($"item/{itemView.ID}");
-        response.EnsureSuccessStatusCode();
-        await LoadItemsFromServer();
+        if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            errorMessage = "This employee already exists in transaction";
+        }
+        else
+        {
+            await LoadItemsFromServer();
+            errorMessage = string.Empty;
+        }
+        
         modalRef.CloseModal();
     }
     private void OpenDeleteConfirmation(ItemViewModel itemView)
