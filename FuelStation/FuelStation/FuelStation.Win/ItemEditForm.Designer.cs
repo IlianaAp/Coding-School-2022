@@ -239,8 +239,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textCode);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ItemEditForm";
-            this.Text = "ItemEditForm";
+            this.Text = "Item Edit";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ItemEditForm_FormClosed);
             this.Load += new System.EventHandler(this.ItemEditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPrice)).EndInit();

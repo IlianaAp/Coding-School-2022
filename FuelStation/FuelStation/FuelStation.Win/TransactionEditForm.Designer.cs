@@ -363,8 +363,11 @@
             this.Controls.Add(this.comboBoxEmployee);
             this.Controls.Add(this.errorPaymentMethodLabel);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "TransactionEditForm";
-            this.Text = "TransactionEditForm";
+            this.Text = "Transaction Edit";
             this.Load += new System.EventHandler(this.TransactionEditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdTransactionLines)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalValue)).EndInit();

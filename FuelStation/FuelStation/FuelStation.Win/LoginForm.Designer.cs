@@ -1,6 +1,6 @@
 ﻿namespace FuelStation.Win
 {
-    partial class LoginForm
+    partial class Login
     {
         /// <summary>
         /// Required designer variable.
@@ -127,7 +127,7 @@
             this.errorAuthLabel.Size = new System.Drawing.Size(0, 17);
             this.errorAuthLabel.TabIndex = 23;
             // 
-            // LoginForm
+            // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -141,7 +141,10 @@
             this.Controls.Add(this.errorUsernameLabel);
             this.Controls.Add(this.textUsername);
             this.Controls.Add(this.label1);
-            this.Name = "LoginForm";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Login";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoginForm";

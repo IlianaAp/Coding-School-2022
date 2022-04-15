@@ -163,8 +163,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textName);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CustomerEditForm";
-            this.Text = "CustomerEditForm";
+            this.Text = "Customer Edit";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CustomerEditForm_FormClosed);
             this.Load += new System.EventHandler(this.CustomerEditForm_Load);
             this.ResumeLayout(false);

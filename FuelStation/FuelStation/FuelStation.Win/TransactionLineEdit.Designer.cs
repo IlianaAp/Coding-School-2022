@@ -305,8 +305,11 @@
             this.Controls.Add(this.errorItemLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBoxItem);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "TransactionLineEdit";
-            this.Text = "TransactionLineEdit";
+            this.Text = "Transaction Line Edit";
             this.Load += new System.EventHandler(this.TransactionLineEdit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericQuantity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericItemPrice)).EndInit();

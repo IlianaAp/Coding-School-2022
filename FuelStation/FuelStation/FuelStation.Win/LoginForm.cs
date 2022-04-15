@@ -13,11 +13,11 @@ using System.Windows.Forms;
 
 namespace FuelStation.Win
 {
-    public partial class LoginForm : Form
+    public partial class Login : Form
     {
         private UserViewModel userView = new();
         private CurrentUser CurrentUser = new();
-        public LoginForm()
+        public Login()
         {
             InitializeComponent();
         }

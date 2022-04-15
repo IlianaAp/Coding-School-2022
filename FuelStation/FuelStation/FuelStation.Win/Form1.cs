@@ -4,10 +4,10 @@ namespace FuelStation.Win
 {
     public partial class Form1 : Form
     {
-        private LoginForm _loginForm;
+        private Login _loginForm;
         private CurrentUser _user;
 
-        public Form1(LoginForm loginForm, CurrentUser user)
+        public Form1(Login loginForm, CurrentUser user)
         {
             _loginForm = loginForm;
             _user = user;

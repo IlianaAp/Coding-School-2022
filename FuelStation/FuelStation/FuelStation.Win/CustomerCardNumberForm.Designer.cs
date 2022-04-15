@@ -110,8 +110,11 @@
             this.Controls.Add(this.errorCardNumberLabel);
             this.Controls.Add(this.textCardNumber);
             this.Controls.Add(this.label2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CustomerCardNumberForm";
-            this.Text = "CustomerCardNumberForm";
+            this.Text = "Customer Card Number";
             this.Load += new System.EventHandler(this.CustomerCardNumberForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
